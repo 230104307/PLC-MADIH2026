@@ -18,7 +18,7 @@ class Circle:
 
 def main():
     # size = int(sys.argv[1])
-    size = 15
+    size = 20
     c = Circle(size)
     for i in range(1,size+1):
         print(c.circleLine(i))
