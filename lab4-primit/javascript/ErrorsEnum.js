@@ -34,12 +34,12 @@ function error2Result(err){
 
 }
 
-console.log('Error list: ', Object.values(Error_enumobj));
+console.log('Error list: ', Object.values(Result_enumobj));
 var validArg = false;
 while(!validArg){
     var input = prompt("Input: ");
     let result = error2Result(input);
-    if (Object.values(Result_enumobj).includes(result)){
+    if (Object.values(Error_enumobj).includes(result)){
         validArg = true;
 		console.log(input + " results in " + error2Result(input));
     }
