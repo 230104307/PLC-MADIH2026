@@ -30,10 +30,10 @@ data Error = Zero | Infinity | ABitDifferent | VeryDifferent
 allErrors :: [Error] -- ie it is a list of PL elements
 allErrors = [minBound .. maxBound]
 
-error2Result FP_Rounding = ABitDifferent
-error2Result FP_Overflow = Infinity
-error2Result FP_Underflow = Zero
-error2Result Int_Overflow = VeryDifferent
+error2Result ABitDifferent = FP_Rounding
+error2Result Infinity = FP_Overflow
+error2Result Zero = FP_Underflow
+error2Result VeryDifferent = Int_Overflow
 
 -- The code below should not be changed and does not need to be fully understood.
 
