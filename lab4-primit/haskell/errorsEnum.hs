@@ -14,13 +14,13 @@ initialiseIO =
     hSetBuffering stdout NoBuffering
         -- ensure any console output is shown asap
 
-data Error = FP_Rounding | FP_Overflow | FP_Underflow | Int_Overflow
+data Result = FP_Rounding | FP_Overflow | FP_Underflow | Int_Overflow
     deriving (Show, -- default formatting
               Read, -- default parsing
               Eq,   -- default equality testing
               Bounded, -- default minBound and maxBound
               Enum) -- default sequencing (needed for .. ranges)
-data Result = Zero | Infinity | ABitDifferent | VeryDifferent
+data Error = Zero | Infinity | ABitDifferent | VeryDifferent
     deriving (Show, -- default formatting
               Read, -- default parsing
               Eq,   -- default equality testing
