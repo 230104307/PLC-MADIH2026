@@ -57,13 +57,13 @@ public class ErrorsEnum
     public static void main(String[] args)
     {
         System.out.print("Known errors = ");
-        for (Error e : EnumSet.allOf(Error.class)) 
+        for (Result r : EnumSet.allOf(Result.class)) 
         {
-            System.out.print(e + " ");
+            System.out.print(r + " ");
         }
         System.out.println();
         
-        Error e = getEnumElement("error", Error.class);
-        System.out.println(e + " results in: " + error2Result(e));
+        Result r = getEnumElement("result", Error.class);
+        System.out.println(e + " results from: " + error2Result(r));
     }
 }
