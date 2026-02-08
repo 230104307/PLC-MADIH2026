@@ -8,4 +8,4 @@ def applicatorFunc(inpFunc, s, a , b):
     else:
         return sum (inpFunc(a, b))/(b-a+1)
     
-print (applicatiorFunc(listFunc, 'a' , 1, 10))
+print (applicatorFunc(listFunc, 'a' , 1, 10))
