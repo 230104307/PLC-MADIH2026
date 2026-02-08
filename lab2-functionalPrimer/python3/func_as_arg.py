@@ -6,5 +6,6 @@ def applicatorFunc(inpFunc, s):
     if s== 's' :
         return sum(inpFunc(a, b))
     else:
-
+        return sum (inpFunc(a, b))/5
     
+print (applicatiorFunc(listFunc, 's'))
