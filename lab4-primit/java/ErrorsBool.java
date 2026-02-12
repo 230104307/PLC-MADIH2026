@@ -39,7 +39,7 @@ public class ErrorsBool
             (e == Error.FP_OVERFLOW ? Result.INFINITY :
                 (e == Error.FP_UNDERFLOW ? Result.ZERO :
                     (e == Error.FP_ROUNDING ? Result.A_BIT_DIFFERENT : 
-                        false == Result.VERY_DIFFERENT
+                         Result.VERY_DIFFERENT
                     )
                 )
             );
