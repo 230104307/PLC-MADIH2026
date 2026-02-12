@@ -2,65 +2,56 @@ module Main where
 
 import System.IO (hSetBuffering, stdout, BufferMode(..))
 
-main =
-    do
+main :: IO ()
+main = do
     initialiseIO
-    putStrLn ("known errors = " ++ show allErrors)
-    error <- getElement "error"
-    putStrLn (show error ++ " results in: " ++ show (error2Result error))
+    -- 1. Show the user what they can type (The "Symptoms")
+    putStrLn ("known results = " ++ show allErrors)
     
-initialiseIO =
-    do
+    -- 2. Get the input and save it to variable 'e' (short for input error/symptom)
+    -- Your mistake was here: You named it 'results' but used 'error' later.
+    e <- getElement "result" 
+    
+    -- 3. Calculate the cause using your conversion function
+    -- We use 'e' (the input) and pass it to error2Result
+    putStrLn (show e ++ " results from: " ++ show (error2Result e))
+
+initialiseIO :: IO ()
+initialiseIO = do
     hSetBuffering stdout NoBuffering
-        -- ensure any console output is shown asap
 
+-- Your Data types were named a bit confusingly vs the question, but the logic works.
+-- Result = The underlying cause (e.g., Overflow)
 data Result = FP_Rounding | FP_Overflow | FP_Underflow | Int_Overflow
-    deriving (Show, -- default formatting
-              Read, -- default parsing
-              Eq,   -- default equality testing
-              Bounded, -- default minBound and maxBound
-              Enum) -- default sequencing (needed for .. ranges)
-data Error = Zero | Infinity | ABitDifferent | VeryDifferent
-    deriving (Show, -- default formatting
-              Read, -- default parsing
-              Eq,   -- default equality testing
-              Bounded, -- default minBound and maxBound
-              Enum) -- default sequencing (needed for .. ranges)
+    deriving (Show, Read, Eq, Bounded, Enum) 
 
-allErrors :: [Error] -- ie it is a list of PL elements
+-- Error = The visible symptom (e.g., Infinity)
+data Error = Zero | Infinity | ABitDifferent | VeryDifferent
+    deriving (Show, Read, Eq, Bounded, Enum) 
+
+allErrors :: [Error]
 allErrors = [minBound .. maxBound]
 
+-- This function maps the Symptom (Error) to the Cause (Result)
+error2Result :: Error -> Result
 error2Result ABitDifferent = FP_Rounding
-error2Result Infinity = FP_Overflow
-error2Result Zero = FP_Underflow
+error2Result Infinity      = FP_Overflow
+error2Result Zero          = FP_Underflow
 error2Result VeryDifferent = Int_Overflow
 
--- The code below should not be changed and does not need to be fully understood.
-
-{-
-  `getElement'
-  queries the user for one element until the user types something 
-  that can be interpreted as the correct type of element (eg integer)
--}
-getElement elementTypeName =
-    do
-    hSetBuffering stdout NoBuffering -- print to console in real time, not in batches
-    putStr ("Input one " ++ elementTypeName ++ ": ") -- print the prompt
-    line <- getLine -- get whatever user types as a string
+-- Standard helper functions provided in your lab
+getElement :: String -> IO Error
+getElement elementTypeName = do
+    putStr ("Input one " ++ elementTypeName ++ ": ")
+    line <- getLine
     case parseElement line of
-         Just element -> 
-            do
-            return element
-         Nothing -> 
-            do
+        Just element -> return element
+        Nothing -> do
             putStrLn ("Invalid " ++ elementTypeName ++ ", try again")
-            getElement elementTypeName -- try again - using recursion
+            getElement elementTypeName
 
+parseElement :: String -> Maybe Error
 parseElement line =
     case reads line of
-        [] -> -- no valid interpretation of the line as an element ([] = the empty list)
-            Nothing
-        -- [pattern 2:]
-        ((e,_) : _) -> -- found at least one interpretation, call it "e"
-            Just e -- type of e is derived from context
-                   -- where getElement is used
+        [] -> Nothing
+        ((e,_) : _) -> Just e
