@@ -15,6 +15,7 @@ instance Show Person where
     -- using Java terminology: Person implements interface Show
     show (Person name) = name -- how to format a Person record
 
+-- TASK 2a: This is where the union type goes
 data Item
     = Piece
         {
@@ -22,11 +23,20 @@ data Item
             item_performer :: Person,
             item_length_secs :: Float
         }
+    | Pause
+        {
+            item_length_secs :: Float
+        }
     deriving (Eq)
 
 instance (Show Item) where
+    -- Pattern 1: How to format a Piece
     show (Piece name performer len) =
         printf "%s by %s (%.1fs)" name (show performer) len
+        
+    -- Pattern 2: How to format a Pause (This is the new line!)
+    show (Pause len) =
+        printf "Pause (%.1fs)" len
 
 piece1 =
     Piece
@@ -44,28 +54,28 @@ piece2 =
         item_length_secs = 16*60+49
     }
   
-{-
+-- TASK 2a: Properly uncommented pause1
 pause1 =
     Pause
     { 
         item_length_secs = 5
     }
--}
 
 main =
     do
      putStrLn "piece1 and piece2 sorted by length:"
+     
+     -- TASK 1b: The "let" statement MUST go here, BEFORE you try to print them!
+     let (shorterPiece, longerPiece) = sortTwoItems (piece1, piece2) 
+     
      putStrLn $ show shorterPiece
      putStrLn $ show longerPiece
-    putStr "piece1 = "
-    putStrLn $ show piece1
---    putStr "pause1 = "
---    putStrLn $ show pause1
-
-  let (shorterPiece, longerPiece) = sortTwoItems (piece1, piece2) -- TASK
+     putStr "piece1 = "
+     putStrLn $ show piece1
+     putStr "pause1 = "
+     putStrLn $ show pause1
 
 sortTwoItems (item1, item2) = 
     if item_length_secs item1 <= item_length_secs item2
         then (item1, item2)
         else (item2, item1)
-
