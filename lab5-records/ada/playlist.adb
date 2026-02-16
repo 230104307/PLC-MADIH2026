@@ -29,9 +29,18 @@ procedure PlayList is
 
     procedure Put_Item (i : Item) is
     begin
-        Put (To_String (i.name));
-        Put (" by ");
-        Put_Person (i.performer);
+        -- Check which type of item it is before trying to print specific fields
+        case i.item_variant is
+            when PIECE =>
+                Put (To_String (i.name));
+                Put (" by ");
+                Put_Person (i.performer);
+            when PAUSE =>
+                Put ("Pause");
+        end case;
+        
+        -- Both pieces and pauses print their length at the end, 
+        -- so this stays outside the case statement!
         Put (" (");
         Put (i.length_secs, aft => 1, exp => 0);
         Put ("s)");
